@@ -117,6 +117,7 @@ url_domain <- function (urls, extended=F) {
 
 clean_text <- function (content) {
   
+  content <- tolower(content)
   content <- gsub("@\\w+", "", content)
   content <- gsub("http[^ ]*", "", content)
   content <- gsub("[ \r\n\t]+", " ", content)
