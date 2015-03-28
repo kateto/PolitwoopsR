@@ -1,0 +1,20 @@
+Package: PolitwoopsR
+Type: Package
+Title: Download Deleted Political Tweets From The Politwoops Project
+Version: 1.0
+Date: 2015-03-27
+Author: Katherine Ognyanova
+Maintainer: Katherine Ognyanova <rstats@ognyanova.net>
+Description: The PolitwoopsR package includes the functions get_pw_tweets 
+  to extract tweet data from any Politwoops project, and get_pw_pol 
+  to get a politician list from the US Politwoops project maintained by 
+  the Sunlight Foundation. It also contains additional helper functions 
+  for URL and text processing.
+Depends: 
+    RJSONIO, 
+	RCurl, 
+	XML, 
+	plyr
+Suggests:
+	twitteR
+License: GPL-2
