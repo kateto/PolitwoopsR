@@ -87,8 +87,7 @@ get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL, json.ext=NU
         if ( is.null(pw.json[[1]]) ) next 
        
         pw.df.mn <- suppressWarnings(do.call(rbind, pw.json))
-        pw.df.i <- do.call("rbind.fill", lapply(pw.df.mn[,1], function(x) as.data.frame(t(unlist(x))))) 
-          for (j in 1:ncol(pw.df.mn)) {
+        for (j in 1:ncol(pw.df.mn)) {
               tmp <- do.call("rbind.fill", lapply(pw.df.mn[,j], function(x) as.data.frame(t(unlist(x))))) 
               if(j==1) { pw.df.i <- tmp } else { pw.df.i <- cbind(pw.df.i, tmp) }
               if (ncol(tmp)==1) colnames(pw.df.i)[ncol(pw.df.i)] <- colnames(pw.df.mn)[j]    
