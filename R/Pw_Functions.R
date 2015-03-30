@@ -22,6 +22,9 @@
 #' @param domain  The domain for the politwoops project of interest (do not include "http://").
 #' Defaults to the US domain (politwoops.sunlightfoundation.com). For a list of other countries,
 #'  see \url{http://politwoops.com/countries}. 
+#' @param json.ext The last part of the URL that points to the country JSON pages - defaults to 
+#' "/index.json?page=" which seems to be correct for some countris (including the US and UK)
+#' but not others. Future versions of this package will automate identifying this extension.
 #'  
 #' @return Data frame with deleted tweet information from Politwoops.
 #'
@@ -34,11 +37,15 @@
 #' 
 #' # Get the first 5 pages from the UK Politwoops tweets:
 #' tweet.df <- get_pw_tweets(1, 5, "politwoops.co.uk")
+#' 
+#' # Get the first 5 pages from Argentina's Politwoops tweets:
+#' tweet.df <- get_pw_tweets(1, 5, "www.politwoops.com/g/Argentina", ".json?page=")
+#' 
 #' }
 #' 
 #' @seealso  \code{\link{get_pw_pol}} \code{\link{merge_pw}}
 #' 
-get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL) {
+get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL, json.ext=NULL) {
     
     if (getOption("stringsAsFactors")) on.exit(options("stringsAsFactors" = T))  
     options("stringsAsFactors" = F)
@@ -49,16 +56,22 @@ get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL) {
     cat(paste0("Processing page #", start.page,".\n"))
     
     if (is.null(domain)) domain <- "politwoops.sunlightfoundation.com"
-    json.url <- paste0("http://", domain,"/index.json?page=")
+    if (is.null(json.ext)) json.ext <- "/index.json?page="
+    json.url <- paste0("http://", domain, json.ext)
+    
     pw.raw <- getURL(paste0(json.url, start.page))
     pw.json <- fromJSON(pw.raw)$tweets
     
-    if ( length(pw.json)==0 ) stop("This start.page does not seem to exist, try a lower #.")
+    if ( length(pw.json)==0 ) { pw.json <- fromJSON(pw.raw); json.str <- 1} else {json.str <- 0}
+    if ( length(pw.json)==0 )  stop("This start.page does not seem to exist, try a lower #.")
     
     pw.df.mn <- do.call("rbind", pw.json)
-    pw.df.dt<- do.call("rbind.fill", lapply(pw.df.mn[,5], function(x) as.data.frame(t(unlist(x)))))
-    pw.df <- cbind(pw.df.mn[,-5], pw.df.dt)
-     
+    for (j in 1:ncol(pw.df.mn)) {
+           tmp <- do.call("rbind.fill", lapply(pw.df.mn[,j], function(x) as.data.frame(t(unlist(x))))) 
+           if(j==1) { pw.df <- tmp } else { pw.df <- cbind(pw.df, tmp) }
+           if (ncol(tmp)==1) colnames(pw.df)[ncol(pw.df)] <- colnames(pw.df.mn)[j]
+         }
+         
     i <- start.page+1
     
     if (i <= end.page)  repeat {       
@@ -66,17 +79,21 @@ get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL) {
         cat(paste0("Processing page #",i ,".\n"))
         
         pw.raw <- getURL(paste0(json.url, i))
-        pw.json <- tryCatch( { fromJSON(pw.raw)$tweets }, 
+        pw.json <- tryCatch( { if (json.str) fromJSON(pw.raw) else fromJSON(pw.raw)$tweets }, 
                                error = function(e) {
                                       print(paste("Invalid json on page", i, " (", e, ")"))
-                                      return(list(NULL)) } )              
+                                      return(list(NULL)) } )
         if ( length(pw.json)==0 ) break else { i <- i+1 }
         if ( is.null(pw.json[[1]]) ) next 
        
         pw.df.mn <- suppressWarnings(do.call(rbind, pw.json))
-        pw.df.dt<- do.call("rbind.fill", lapply(pw.df.mn[,5], function(x) as.data.frame(t(unlist(x)))))
+        pw.df.i <- do.call("rbind.fill", lapply(pw.df.mn[,1], function(x) as.data.frame(t(unlist(x))))) 
+          for (j in 1:ncol(pw.df.mn)) {
+              tmp <- do.call("rbind.fill", lapply(pw.df.mn[,j], function(x) as.data.frame(t(unlist(x))))) 
+              if(j==1) { pw.df.i <- tmp } else { pw.df.i <- cbind(pw.df.i, tmp) }
+              if (ncol(tmp)==1) colnames(pw.df.i)[ncol(pw.df.i)] <- colnames(pw.df.mn)[j]    
+          }        
         
-        pw.df.i <- cbind(pw.df.mn[,-5], pw.df.dt)
         pw.df <- rbind.fill(pw.df, pw.df.i)
         
         if (i > end.page) break

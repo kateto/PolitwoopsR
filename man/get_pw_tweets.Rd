@@ -4,7 +4,8 @@
 \alias{get_pw_tweets}
 \title{Get deleted politician tweet data from the Politwoops project}
 \usage{
-get_pw_tweets(start.page = 1, end.page = "all", domain = NULL)
+get_pw_tweets(start.page = 1, end.page = "all", domain = NULL,
+  json.ext = NULL)
 }
 \arguments{
 \item{start.page}{The first json page to get - defaults to page 1.}
@@ -14,6 +15,10 @@ get_pw_tweets(start.page = 1, end.page = "all", domain = NULL)
 \item{domain}{The domain for the politwoops project of interest (do not include "http://").
 Defaults to the US domain (politwoops.sunlightfoundation.com). For a list of other countries,
  see \url{http://politwoops.com/countries}.}
+
+\item{json.ext}{The last part of the URL that points to the country JSON pages - defaults to
+"/index.json?page=" which seems to be correct for some countris (including the US and UK)
+but not others. Future versions of this package will automate identifying this extension.}
 }
 \value{
 Data frame with deleted tweet information from Politwoops.
@@ -30,6 +35,10 @@ tweet.df <- get_pw_tweets()
 
 # Get the first 5 pages from the UK Politwoops tweets:
 tweet.df <- get_pw_tweets(1, 5, "politwoops.co.uk")
+
+# Get the first 5 pages from Argentina's Politwoops tweets:
+tweet.df <- get_pw_tweets(1, 5, "www.politwoops.com/g/Argentina", ".json?page=")
+
 }
 }
 \author{
