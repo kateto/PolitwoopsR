@@ -11,8 +11,7 @@ Description: The PolitwoopsR package includes the functions get_pw_tweets
   the Sunlight Foundation. It also contains additional helper functions 
   for URL and text processing.
 Depends: 
-    RJSONIO, 
-	RCurl, 
+    httr, 
 	XML, 
 	plyr
 Suggests:

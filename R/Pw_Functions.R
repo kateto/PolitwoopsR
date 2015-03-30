@@ -59,10 +59,10 @@ get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL, json.ext=NU
     if (is.null(json.ext)) json.ext <- "/index.json?page="
     json.url <- paste0("http://", domain, json.ext)
     
-    pw.raw <- getURL(paste0(json.url, start.page))
-    pw.json <- fromJSON(pw.raw)$tweets
+    pw.raw <- GET(paste0(json.url, start.page))
+    pw.json <- content(pw.raw, as="parsed")$tweets
     
-    if ( length(pw.json)==0 ) { pw.json <- fromJSON(pw.raw); json.str <- 1} else {json.str <- 0}
+    if ( length(pw.json)==0 ) { pw.json <- content(pw.raw, "parsed"); json.str <- 1} else {json.str <- 0}
     if ( length(pw.json)==0 )  stop("This start.page does not seem to exist, try a lower #.")
     
     pw.df.mn <- do.call("rbind", pw.json)
@@ -78,8 +78,8 @@ get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL, json.ext=NU
         
         cat(paste0("Processing page #",i ,".\n"))
         
-        pw.raw <- getURL(paste0(json.url, i))
-        pw.json <- tryCatch( { if (json.str) fromJSON(pw.raw) else fromJSON(pw.raw)$tweets }, 
+        pw.raw <- GET(paste0(json.url, i))
+        pw.json <- tryCatch( { if (json.str) content(pw.raw, "parsed") else content(pw.raw, "parsed")$tweets }, 
                                error = function(e) {
                                       print(paste("Invalid json on page", i, " (", e, ")"))
                                       return(list(NULL)) } )

@@ -26,7 +26,7 @@
 #' @name PolitwoopsR
 #' @docType package
 #' @author Katya Ognyanova \email{rstats@@ognyanova.net}  
-#' @import  RJSONIO RCurl XML plyr
+#' @import httr XML plyr
 #' 
 NULL
  
