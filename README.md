@@ -12,6 +12,9 @@ To install the package, you need devtools:
   devtools::install_github('kateto/PolitwoopsR')</strong></p>
 
 Some visualizations based on politwoops data are <a href="http://kateto.net/politwoops" target="_blank">available here</a>.
-
+ 
 <a href="http://kateto.net/politwoops" target="_blank">
-<img src="http://kateto.net/wordpress/wp-content/uploads/2015/03/Politwoops-All-Charts-2015.png" width="600"> </a>
+<img src="http://kateto.net/wordpress/wp-content/uploads/2015/03/Politwoops-All-Charts-2015.png" width="600">
+
+<img src="http://kateto.net/wordpress/wp-content/uploads/2015/03/PolitwoopsR-package.jpg" width="560"> </a>
+ 
