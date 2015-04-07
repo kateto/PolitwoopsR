@@ -1,7 +1,7 @@
 # PolitwoopsR
 
 
-<i>[Update 15/07/02] If you were brought here by a Dean Richards Twitter bot, <a href="http://kateto.net/2015/03/deleted-congressional-tweets-the-r-code/#bots">read this</a>.</i>
+<i>[Update 04/07/15] If you were brought here by a Dean Richards Twitter bot, <a href="http://kateto.net/2015/03/deleted-congressional-tweets-the-r-code/#bots">read this</a>.</i>
 
 
 Extract deleted tweet and politician data from the Politwoops project.
