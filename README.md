@@ -1,6 +1,8 @@
 # PolitwoopsR
 
 
+<i>[Update 08/28/15] Unfortunately, Twitter has shut down the Politwoops project - both in the US and internationally. This package can presently only help you extract historic content. </i>
+
 <i>[Update 04/07/15] If you were brought here by a Dean Richards Twitter bot, <a href="http://kateto.net/2015/03/deleted-congressional-tweets-the-r-code/#bots">read this</a>.</i>
 
 
