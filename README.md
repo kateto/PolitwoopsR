@@ -1,5 +1,5 @@
 # PolitwoopsR
-
+<i>[Update 01/16] Good news: the Politwoops project is back! Twitter has reversed its decision and will restore the API access for the purpos of collecting deleted political tweets. For more information, read <a href="http://nyti.ms/23A5PF4" target="_blank">a NYT article</a> on this. </i>
 
 <i>[Update 08/28/15] Unfortunately, Twitter has shut down the Politwoops project - both in the US and internationally. This package can presently only help you extract historic content. </i>
 
