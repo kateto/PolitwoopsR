@@ -17,3 +17,4 @@ Depends:
 Suggests:
 	twitteR
 License: GPL-2
+RoxygenNote: 6.0.1
