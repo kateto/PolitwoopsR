@@ -55,7 +55,7 @@ get_pw_tweets <- function(start.page=1, end.page="all", domain=NULL, json.ext=NU
     cat("Getting deleted tweets... this may take a while.\n")
     cat(paste0("Processing page #", start.page,".\n"))
     
-    if (is.null(domain)) domain <- "politwoops.sunlightfoundation.com"
+    if (is.null(domain)) domain <- "projects.propublica.org/politwoops"
     if (is.null(json.ext)) json.ext <- "/index.json?page="
     json.url <- paste0("http://", domain, json.ext)
     
@@ -140,7 +140,7 @@ get_pw_pol <- function(start.page=1, end.page="all") {
       cat("Getting politician data... this may take a while.\n")
       cat(paste0("Processing page #",start.page ,".\n"))
       
-      pol.url <- "http://politwoops.sunlightfoundation.com/users?page="
+      pol.url <- "https://projects.propublica.org/politwoops/users?page="
       
       # parse the document for R representation:
       pol.doc <- htmlParse(paste0(pol.url, start.page))
