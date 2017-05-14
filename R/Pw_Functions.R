@@ -143,7 +143,7 @@ get_pw_pol <- function(start.page=1, end.page="all") {
       pol.url <- "http://projects.propublica.org/politwoops/users?page="
       
       # parse the document for R representation:
-      pol.doc <- htmlParse(paste0(pol.url, start.page))
+      pol.doc <- htmlParse(rawToChar(GET(paste0(pol.url, start.page))$content))
       
       # get all the tables in the doc as data frames:
       pol.inf <- readHTMLTable(pol.doc) 
@@ -163,7 +163,7 @@ get_pw_pol <- function(start.page=1, end.page="all") {
          cat(paste0("Processing page #",i ,".\n"))
                 
          pol.url.i <- paste0(pol.url, i)
-         pol.doc.i <- htmlParse(pol.url.i)         
+         pol.doc.i <- htmlParse(rawToChar(GET(pol.url.i)$content))        
          pol.inf.i <- readHTMLTable(pol.doc.i) 
          
          if (is.null(pol.inf.i[[1]])) break else i <- i+1
@@ -171,7 +171,7 @@ get_pw_pol <- function(start.page=1, end.page="all") {
          pol.inf.i <- data.frame(pol.inf.i[[1]], stringsAsFactors=F)[2:5]
          colnames(pol.inf.i) <- c("full.name", "state","type.tmp", "party.tmp")
         
-         pol.par.i <- htmlParse(pol.url.i)
+         pol.par.i <- htmlParse(rawToChar(GET(pol.url.i)$content))     
          pol.links.i <- data.frame(url=xpathSApply(pol.par.i, "//a/@href"), stringsAsFactors=F)
          free(pol.par.i)
              
@@ -186,7 +186,7 @@ get_pw_pol <- function(start.page=1, end.page="all") {
       
      # Clean the resulting data frame:  
       pol.inf$full.name <- gsub("\t", "",  pol.inf$full.name)
-      pnames <- suppressWarnings(do.call(rbind, strsplit(pol.inf$full.name, "\n")))      
+      pnames <- suppressWarnings(do.call(rbind, strsplit(pol.inf$full.name, " ")))      
       pol.inf[,c("first.name", "middle.name", "last.name")] <- pnames[,1:3]
       pol.inf$full.name <- gsub("\n", " ", pol.inf$full.name)
       pol.inf$full.name <- gsub("  ", " ", pol.inf$full.name)
