@@ -140,7 +140,7 @@ get_pw_pol <- function(start.page=1, end.page="all") {
       cat("Getting politician data... this may take a while.\n")
       cat(paste0("Processing page #",start.page ,".\n"))
       
-      pol.url <- "https://projects.propublica.org/politwoops/users?page="
+      pol.url <- "http://projects.propublica.org/politwoops/users?page="
       
       # parse the document for R representation:
       pol.doc <- htmlParse(paste0(pol.url, start.page))
